@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forklift Certification Cards</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom styles for printing */
+        @media print {
+            body {
+                margin: 0;
+                padding: 0;
+                background-color: white;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+            .card-wrapper {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr); /* Two columns for printing */
+                gap: 0.5rem;
+                padding: 0.5in;
+                width: 100%;
+                height: 100%;
+            }
+            .card-container {
+                width: 3.37in;
+                height: 2.13in;
+                page-break-inside: avoid;
+                margin: 0;
+                box-shadow: none;
+                border: 1px solid #ccc;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+            .header-section {
+                background-color: #38a169 !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+            .no-print {
+                display: none !important;
+            }
+            .content-input, .date-input {
+                border-bottom: 1px solid #ccc !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+                background-color: transparent !important;
+                color: #333 !important;
+            }
+            .upload-button {
+                display: none !important;
+            }
+            .logo-img {
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+            .content-input, .date-input {
+                display: none !important;
+            }
+            .print-value {
+                display: inline !important;
+                border-bottom: 1px dashed #ccc;
+                padding-bottom: 1px;
+                margin-left: 0.3rem;
+                flex-grow: 1;
+                min-width: 0;
+                color: #333;
+            }
+            .card-content {
+                font-size: 0.65rem;
+            }
+            .card-title {
+                font-size: 0.8rem;
+            }
+        }
+
+        body {
+            font-family: "Inter", sans-serif;
+            background-color: #f0f2f5;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .card-wrapper {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: flex-start; /* Changed to flex-start for better grid alignment */
+            margin-bottom: 30px;
+            width: 100%;
+            max-width: 800px; /* Limit width to prevent too wide layout */
+        }
+
+        /* New class for card positioning */
+        .card-row {
+            display: flex;
+            width: 100%;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .card-container {
+            width: 3.37in;
+            height: 2.13in;
+            border-radius: 0.5rem;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            background-color: white;
+            display: flex;
+            flex-direction: column;
+            flex-shrink: 0;
+            border: 1px solid #e2e8f0;
+        }
+
+        .header-section {
+            background-color: #38a169;
+            display: flex;
+            align-items: center;
+            padding: 0.4rem 0.6rem;
+            color: white;
+            position: relative;
+            height: 40%;
+        }
+
+        .profile-pic-container {
+            width: 2.5rem;
+            height: 2.5rem;
+            background-color: #cbd5e0;
+            border-radius: 9999px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            border: 2px solid white;
+            position: absolute;
+            left: 0.6rem;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+        }
+
+        .profile-pic {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .upload-button {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+            z-index: 1;
+        }
+
+        .profile-pic-icon {
+            font-size: 1.5rem;
+            color: #a0aec0;
+            position: absolute;
+            z-index: 0;
+        }
+
+        .logo-section {
+            position: absolute;
+            right: 0.6rem;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            align-items: center;
+            height: 80%;
+        }
+
+        .logo-img {
+            height: 100%;
+            width: auto;
+            object-fit: contain;
+        }
+
+        .card-title {
+            font-weight: bold;
+            font-size: 0.8rem;
+            color: white;
+            margin-left: 3.5rem;
+            white-space: nowrap;
+        }
+
+        .card-content {
+            padding: 0.4rem 0.6rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            flex-grow: 1;
+            font-size: 0.6rem;
+            color: #333;
+        }
+
+        .content-row {
+            display: flex;
+            align-items: baseline;
+            margin-bottom: 0.1rem;
+            position: relative;
+        }
+
+        .content-label {
+            font-weight: 600;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .content-input {
+            border: none;
+            border-bottom: 1px dashed #ccc;
+            background: none;
+            text-align: left;
+            font-size: 0.6rem;
+            padding: 0;
+            margin-left: 0.3rem;
+            flex-grow: 1;
+            min-width: 0;
+        }
+
+        .content-input:focus {
+            outline: none;
+            border-bottom-color: #38a169;
+        }
+
+        .print-value {
+            display: none;
+        }
+
+        .date-input {
+            width: 4.5rem;
+            border: none;
+            border-bottom: 1px dashed #ccc;
+            background: none;
+            text-align: center;
+            font-size: 0.6rem;
+            padding: 0;
+            margin-left: 0.2rem;
+        }
+
+        .date-input:focus {
+            outline: none;
+            border-bottom-color: #38a169;
+        }
+
+        .valid-text {
+            font-size: 0.5rem;
+            text-align: right;
+            margin-top: 0.1rem;
+            color: #666;
+            flex-shrink: 0;
+            margin-left: 0.5rem;
+        }
+
+        .action-buttons {
+            margin-top: 20px;
+            display: flex;
+            gap: 15px;
+        }
+
+        .action-button {
+            background-color: #4a90e2;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 0.5rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            border: none;
+        }
+
+        .action-button:hover {
+            background-color: #357bd8;
+        }
+
+        .action-button:active {
+            transform: translateY(1px);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 400px;
+            border-radius: 0.5rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            text-align: center;
+        }
+
+        .close-button {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close-button:hover,
+        .close-button:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="action-buttons no-print">
+        <button class="action-button" onclick="addCard()">Add New Card</button>
+        <button class="action-button" onclick="printCards()">Print All Cards</button>
+    </div>
+
+    <div id="cardWrapper" class="card-wrapper">
+        <!-- Cards will be added here by JavaScript -->
+    </div>
+
+    <!-- Custom Modal for Messages -->
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" onclick="closeModal()">&times;</span>
+            <p id="modalMessage"></p>
+        </div>
+    </div>
+
+    <script>
+        let cardCount = 0;
+        let currentRow = null;
+
+        function showModal(message) {
+            const modal = document.getElementById('myModal');
+            const modalMessage = document.getElementById('modalMessage');
+            modalMessage.textContent = message;
+            modal.style.display = 'flex';
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('myModal');
+            modal.style.display = 'none';
+        }
+
+        window.onclick = function(event) {
+            const modal = document.getElementById('myModal');
+            if (event.target == modal) {
+                closeModal();
+            }
+        }
+
+        function addCard() {
+            cardCount++;
+            const cardWrapper = document.getElementById('cardWrapper');
+            
+            // Create a new row for every odd-numbered card
+            if (cardCount % 2 === 1) {
+                currentRow = document.createElement('div');
+                currentRow.className = 'card-row';
+                cardWrapper.appendChild(currentRow);
+            }
+            
+            // Only proceed if we have a current row (should always be true)
+            if (currentRow) {
+                const cardContainer = document.createElement('div');
+                cardContainer.className = 'card-container';
+                cardContainer.id = `card-${cardCount}`;
+
+                cardContainer.innerHTML = `
+                    <div class="header-section">
+                        <div class="profile-pic-container" onclick="document.getElementById('fileInput-${cardCount}').click()">
+                            <img class="profile-pic" id="profilePic-${cardCount}" src="" alt="Profile Picture" style="display: none;">
+                            <span class="profile-pic-icon" id="profilePicIcon-${cardCount}">👤</span>
+                            <input type="file" id="fileInput-${cardCount}" class="upload-button" accept="image/*" onchange="handleImageUpload(event, ${cardCount})">
+                        </div>
+                        <div class="card-title">Forklift Certification</div>
+                        <div class="logo-section">
+                            <img src="Viking-logo.png" alt="VP Viking Plastics Logo" class="logo-img">
+                        </div>
+                    </div>
+                    <div class="card-content">
+                        <div class="content-row">
+                            <span class="content-label">Operator Name:</span>
+                            <input type="text" class="content-input" placeholder="Enter Name" id="name-${cardCount}">
+                            <span class="print-value" id="print-name-${cardCount}"></span>
+                        </div>
+                        <div class="content-row">
+                            <span class="content-label">Department/Area:</span>
+                            <input type="text" class="content-input" placeholder="Enter Department/Area" id="dept-${cardCount}">
+                            <span class="print-value" id="print-dept-${cardCount}"></span>
+                        </div>
+                        <div class="content-row">
+                            <span class="content-label">Training Completed By:</span>
+                            <input type="text" class="content-input" placeholder="Enter Trainer Name" id="trainer-${cardCount}">
+                            <span class="print-value" id="print-trainer-${cardCount}"></span>
+                        </div>
+                        <div class="content-row">
+                            <span class="content-label">Date of Certification:</span>
+                            <input type="text" class="date-input" placeholder="MM/DD/YYYY" onfocus="(this.type='date')" onblur="(this.type='text')" id="date-${cardCount}">
+                            <span class="print-value" id="print-date-${cardCount}"></span>
+                            <span class="valid-text">(Valid for 3 years)</span>
+                        </div>
+                    </div>
+                `;
+                currentRow.appendChild(cardContainer);
+
+                // Add event listeners to update print values in real-time
+                document.getElementById(`name-${cardCount}`).addEventListener('input', function() {
+                    document.getElementById(`print-name-${cardCount}`).textContent = this.value;
+                });
+                document.getElementById(`dept-${cardCount}`).addEventListener('input', function() {
+                    document.getElementById(`print-dept-${cardCount}`).textContent = this.value;
+                });
+                document.getElementById(`trainer-${cardCount}`).addEventListener('input', function() {
+                    document.getElementById(`print-trainer-${cardCount}`).textContent = this.value;
+                });
+                document.getElementById(`date-${cardCount}`).addEventListener('input', function() {
+                    document.getElementById(`print-date-${cardCount}`).textContent = this.value;
+                });
+            }
+        }
+
+        function handleImageUpload(event, cardId) {
+            const file = event.target.files[0];
+            const profilePic = document.getElementById(`profilePic-${cardId}`);
+            const profilePicIcon = document.getElementById(`profilePicIcon-${cardId}`);
+
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    profilePic.src = e.target.result;
+                    profilePic.style.display = 'block';
+                    profilePicIcon.style.display = 'none';
+                };
+                reader.readAsDataURL(file);
+            } else {
+                profilePic.src = '';
+                profilePic.style.display = 'none';
+                profilePicIcon.style.display = 'block';
+            }
+        }
+
+        function printCards() {
+            if (cardCount === 0) {
+                showModal("Please add at least one card before printing.");
+                return;
+            }
+            
+            // Before printing, sync all input values to their print counterparts
+            for (let i = 1; i <= cardCount; i++) {
+                const nameInput = document.getElementById(`name-${i}`);
+                const deptInput = document.getElementById(`dept-${i}`);
+                const trainerInput = document.getElementById(`trainer-${i}`);
+                const dateInput = document.getElementById(`date-${i}`);
+
+                if (nameInput) document.getElementById(`print-name-${i}`).textContent = nameInput.value;
+                if (deptInput) document.getElementById(`print-dept-${i}`).textContent = deptInput.value;
+                if (trainerInput) document.getElementById(`print-trainer-${i}`).textContent = trainerInput.value;
+                if (dateInput) document.getElementById(`print-date-${i}`).textContent = dateInput.value;
+            }
+            
+            // Store original HTML
+            const originalHTML = document.body.innerHTML;
+            
+            // Get only the cards content
+            const cardsContent = document.getElementById('cardWrapper').innerHTML;
+            
+            // Replace body content with just the cards in a print-optimized layout
+            document.body.innerHTML = `
+                <div class="card-wrapper">
+                    ${cardsContent}
+                </div>
+            `;
+            
+            // Print the page
+            window.print();
+            
+            // Restore original content
+            document.body.innerHTML = originalHTML;
+        }
+
+        // Add an initial card when the page loads
+        document.addEventListener('DOMContentLoaded', addCard);
+    </script>
+</body>
+</html>
